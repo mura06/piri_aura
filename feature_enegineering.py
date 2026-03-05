@@ -70,3 +70,12 @@ print('Total number of people with unknown people smoking status:', num_unk_smok
 
 
 #### Numerical values
+
+# As the stroke risk highly doesn't depend on a specific age number, but on a age group, we'll convert the numbers into groups.
+
+df['age_group'] = pd.cut(
+    df['age'],
+    bins=[0, 18, 40, 60, 120],
+    labels=['child', 'adult', 'middle_age', 'senior']
+)
+
