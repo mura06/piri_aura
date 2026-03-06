@@ -7,7 +7,7 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 
 df = pd.read_csv('healthcare-dataset-stroke-data.csv')
-
+df = df.set_index('id')  # Set 'id' as the index column
 
 # Following that, the shape, information and dataset will be shown.
 print("Dataset shape:", df.shape)  
@@ -70,3 +70,24 @@ print('Total number of people with unknown people smoking status:', num_unk_smok
 
 
 #### Numerical values
+
+# As the stroke risk highly doesn't depend on a specific age number, but on a age group, we'll convert the numbers into groups.
+
+df['age_group'] = pd.cut(
+    df['age'],
+    bins=[0, 18, 40, 60, 120],
+    labels=['child', 'adult', 'middle_age', 'senior']
+)
+
+
+def new_features(df):
+    # Create a new feature for high glucose levels
+    df['high_glucose'] = (df['avg_glucose_level'] > 125).astype(int)
+
+    # Create a new feature for obesity
+    df['obese'] = (df['bmi'] >= 30).astype(int)
+
+    # Create a new feature for hypertension and heart disease combined
+    df['hypertension_heart_disease'] = ((df['hypertension'] == 1) & (df['heart_disease'] == 1)).astype(int)
+
+    return df
